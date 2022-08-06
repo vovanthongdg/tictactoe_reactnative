@@ -4,10 +4,20 @@ import React from 'react'
 const Splash = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>TicTacToe</Text>
+      <Text style={styles.welcome}>TicTacToe Funny Game</Text>
       <View style={styles.view1}>
       <TouchableOpacity onPress={() => navigation.navigate('game')}>
-        <Text style={styles.instructions}>Chơi Ngay </Text>
+        <Text style={styles.instructions}>Play Game </Text>
+      </TouchableOpacity>
+      </View>
+      <View style={{...styles.view1,marginTop:20}}>
+      <TouchableOpacity onPress={() => navigation.navigate('game')}>
+        <Text style={styles.instructions}>Tutorial </Text>
+      </TouchableOpacity>
+      </View>
+      <View style={{...styles.view1,marginTop:20}}>
+      <TouchableOpacity onPress={() => navigation.navigate('game')}>
+        <Text style={styles.instructions}>Setting</Text>
       </TouchableOpacity>
       </View>
     </View>
@@ -32,7 +42,7 @@ const styles = StyleSheet.create({
       },
       view1: {
         height: 50,
-        width: 100,
+        width: 200,
         backgroundColor: '#000',
         alignItems: 'center',
         justifyContent: 'center',
@@ -43,6 +53,6 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
-
+        paddingHorizontal: 10
       },
 })

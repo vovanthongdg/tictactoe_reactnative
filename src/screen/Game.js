@@ -6,11 +6,13 @@ import
   SafeAreaView, 
   Pressable, 
   Image, 
-  Dimensions } from 'react-native'
+  Dimensions,
+  Button
+} from 'react-native'
 
 const windowWidth = Dimensions.get('window').width;
 
-const Game = () => {
+const Game = ({navigation}) => {
     const [active_player, setActive_player] = useState('X')
     const [markers, setMarkers] = useState([
       null, null, null,
@@ -58,7 +60,19 @@ const Game = () => {
       }
       return null;
     }
-  
+    useEffect(()=>{
+      navigation.setOptions({
+        headerLeft: () => (
+          <Button
+            onPress={() => {
+              navigation.goBack();
+            }}
+            title="Back"
+          />
+        ),
+        headerRight:null
+      });
+    },[])
     useEffect(() => {
       const winner = calculateWinner(markers);
       if(winner === 'X'){
@@ -70,8 +84,8 @@ const Game = () => {
       }
     }, [markers])
     return (
-      <View style={styles.body}>
-        <View style={[styles.playerInfo, { backgroundColor: active_player === 'X' ? '#EEE724' : '#111111' }]}>
+      <SafeAreaView style={styles.body}>
+        <View style={[styles.playerInfo, { backgroundColor: active_player === 'X' ? '#FF6666' : '#111111' }]}>
           <Text style={styles.playerTxt}>Player {active_player}'s turn</Text>
         </View>
         <View style={styles.mainContainer}>
@@ -133,7 +147,7 @@ const Game = () => {
         <Pressable style={styles.cancleBTN} onPress={resetMarkers}>
           <Image source={require('../../asset/img/replay.png')} style={styles.cancelIcon}/>
         </Pressable>
-      </View>
+      </SafeAreaView>
     )
 }
 

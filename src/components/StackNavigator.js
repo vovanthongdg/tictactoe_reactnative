@@ -1,4 +1,3 @@
-import { View, Text } from 'react-native'
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import Splash from '../screen/Splash'
@@ -8,19 +7,15 @@ const Stack = createStackNavigator()
 
 const StackNavigator = () => {
 
-
   return (
     <Stack.Navigator 
       screenOptions={{
         headerShown:false,
       }}
+      initialRouteName="splash"
     >
-        <Stack.Screen name='splash' component={Splash} 
-        options={{
-          
-        }}
-        />
-        <Stack.Screen name='game' component={Game} />
+        <Stack.Screen name='splash' component={Splash} />
+        <Stack.Screen name='game' component={Game} options={{headerShown:true,headerTitle:"TicTacToe"}}/>
     </Stack.Navigator>
   )
 }

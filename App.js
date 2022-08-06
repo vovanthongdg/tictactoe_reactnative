@@ -19,10 +19,6 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import StackNavigator from './src/components/StackNavigator';
 import Game from './src/screen/Game';
 
-
-
-
-
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -31,12 +27,6 @@ const App = () => {
   };
 
   return (
-    // <SafeAreaView style={backgroundStyle}>
-    //   <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-    //   <Game/>
-      
-    // </SafeAreaView>
-
     <NavigationContainer>
       <StackNavigator/>
     </NavigationContainer>
