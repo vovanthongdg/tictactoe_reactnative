@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+// Import the react-native-sound module
 
 const Splash = ({navigation}) => {
   return (
@@ -11,12 +12,12 @@ const Splash = ({navigation}) => {
       </TouchableOpacity>
       </View>
       <View style={{...styles.view1,marginTop:20}}>
-      <TouchableOpacity onPress={() => navigation.navigate('game')}>
+      <TouchableOpacity onPress={() => navigation.navigate('tutorial')}>
         <Text style={styles.instructions}>Tutorial </Text>
       </TouchableOpacity>
       </View>
       <View style={{...styles.view1,marginTop:20}}>
-      <TouchableOpacity onPress={() => navigation.navigate('game')}>
+      <TouchableOpacity onPress={() => navigation.navigate('setting')}>
         <Text style={styles.instructions}>Setting</Text>
       </TouchableOpacity>
       </View>
