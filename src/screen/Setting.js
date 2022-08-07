@@ -2,10 +2,13 @@ import React from 'react';
 import { SafeAreaView,View,Text,Button,Switch } from 'react-native';
 import { useSelector,useDispatch } from 'react-redux';
 import { turnOnSound,turnOffSound } from '../redux/reducer/soundReducer';
+import { setBackground } from '../redux/reducer/backgroundReducer';
 import AsyncStorage from '@react-native-community/async-storage';
+import {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 export default function Setting({navigation}) {
     const dispatch = useDispatch();
-    const {statusSound} = useSelector((e)=>e.soundReducer)
+    const {statusSound} = useSelector((e)=>e.SoundReducer)
+    const {backgroundCurrent} = useSelector((e)=>e.BackgroundReducer);
 
     React.useEffect(()=>{
         navigation.setOptions({
@@ -20,6 +23,26 @@ export default function Setting({navigation}) {
           headerRight:null
         });
     },[])
+    React.useEffect(()=>{
+      checkCurrentBackground();
+    },[])
+    const checkCurrentBackground = async()=>{
+      const currentBackGround = await AsyncStorage.getItem("BACKGROUND");
+      switch(currentBackGround){
+        case null:
+          dispatch(setBackground("1"));
+          break;
+        case "1":
+          dispatch(setBackground("1"));
+          break;
+        case "2":
+          dispatch(setBackground("2"));
+          break;
+        case "3":
+          dispatch(setBackground("3"));
+          break;
+      }
+    }
     const handleChangeSound = async()=>{
         if(statusSound === "on"){
             dispatch(turnOffSound())
@@ -31,6 +54,54 @@ export default function Setting({navigation}) {
                 'yes'
             ); 
         }
+    }
+    const ComponentBackground = ({valueBG}) => {
+      return(
+        <View
+          style={{
+            flexDirection:'column'
+          }}
+        >
+          <RadioButton labelHorizontal={true} >
+            {/*  You can set RadioButtonLabel before RadioButtonInput */}
+            <RadioButtonInput
+              obj={{value:valueBG,index:valueBG}}
+              isSelected={backgroundCurrent==valueBG}
+              onPress={setBackgroundCurrent}
+              borderWidth={1}
+              buttonInnerColor={'#e74c3c'}
+              buttonOuterColor={backgroundCurrent==valueBG ? '#2196f3' : '#000'}
+              buttonSize={18}
+              buttonOuterSize={25}
+              buttonStyle={{}}
+              buttonWrapStyle={{marginLeft: 10}}
+            />
+            <RadioButtonLabel
+              obj={{label:`Set ${valueBG}`,value:valueBG,index:valueBG}}
+              labelHorizontal={true}
+              onPress={setBackgroundCurrent}
+              labelStyle={{fontSize: 15, color: 'gray'}}
+              labelWrapStyle={{}}
+            />
+          </RadioButton>
+          <View
+            style={{
+              backgroundColor:valueBG == 1 ? 'red' : valueBG == 2 ? 'tomato':'green',
+              width:'100%',
+              height:150,
+              borderRadius:10
+            }}
+          >
+
+          </View>
+        </View>
+      )
+    }
+    
+    const setBackgroundCurrent = async(value)=> {
+      await AsyncStorage.setItem("BACKGROUND",value.toString());
+      checkCurrentBackground();
+      alert(`Set background is set ${value} success !`)
     }
     return(
         <SafeAreaView style={{flex:1}}>
@@ -51,6 +122,29 @@ export default function Setting({navigation}) {
                 value={statusSound === "on"}
             />
             </View>
+            <View 
+              style={{
+                justifyContent:'center',
+                marginTop:20,
+                paddingHorizontal:20
+              }}
+            >
+              <Text style={{color:'black',marginRight:20,fontSize:17}}>Set Background</Text>
+              <View
+                style={{
+                  flexDirection:'row',
+                  alignItems:'center',
+                  justifyContent:'space-between',
+                  marginTop:10
+                }}
+              >
+                <ComponentBackground valueBG={1}/>
+                <ComponentBackground valueBG={2}/>
+                <ComponentBackground valueBG={3}/>
+              </View>
+            </View>
+
+
         </SafeAreaView>
     )
 }

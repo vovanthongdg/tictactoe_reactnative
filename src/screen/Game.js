@@ -40,7 +40,7 @@ const Game = ({navigation}) => {
         null, null, null
       ])
     }
-  
+    
     const calculateWinner = (squares) => {
       const lines = [
         [0,1,2],
@@ -58,7 +58,7 @@ const Game = ({navigation}) => {
           return squares[a];
         }
       }
-      return null;
+      return null
     }
     useEffect(()=>{
       navigation.setOptions({
@@ -80,6 +80,9 @@ const Game = ({navigation}) => {
         resetMarkers()
       }else if(winner === 'O'){
         alert("O Won!")
+        resetMarkers()
+      }else if(winner === "not_win"){
+        alert("Hoà nè")
         resetMarkers()
       }
     }, [markers])

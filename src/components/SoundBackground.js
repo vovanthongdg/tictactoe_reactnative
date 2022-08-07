@@ -5,7 +5,7 @@ import { turnOnSound } from '../redux/reducer/soundReducer';
 var Sound = require('react-native-sound');
 
 export default function SoundBackground(){
-    const {statusSound} = useSelector(e=>e.soundReducer)
+    const {statusSound} = useSelector(e=>e.SoundReducer)
     const dispatch = useDispatch();
 
     var whoosh = new Sound(require('../assets/sound_background.mp3'), (error) => {
@@ -26,6 +26,7 @@ export default function SoundBackground(){
                 console.log('playback failed due to audio decoding errors');
                 }
             });
+            whoosh.setNumberOfLoops(-1);
         }else{
             whoosh.stop()
         }
