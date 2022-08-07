@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import React, { useState, useEffect } from 'react'
 import 
 { StyleSheet, 
@@ -7,13 +8,16 @@ import
   Pressable, 
   Image, 
   Dimensions,
-  Button
+  Button,
+  Modal
 } from 'react-native'
 
 const windowWidth = Dimensions.get('window').width;
 
 const Game = ({navigation}) => {
     const [active_player, setActive_player] = useState('X')
+    const [modalHistoryVisible, setmodalHistoryVisible] = useState(false);
+    const [history, sethistory] = useState({"winO":0,"winX":0,"draw":0});
     const [markers, setMarkers] = useState([
       null, null, null,
       null, null, null,
@@ -69,6 +73,34 @@ const Game = ({navigation}) => {
         }
       }
     }
+    const handleUpdateHistory = async()=>{
+      const valueHistory = await AsyncStorage.getItem("HISTORY");
+      if(valueHistory!==null){
+        const tmp = JSON.parse(valueHistory);
+        sethistory(tmp)
+      }
+    }
+    const handleSetHistory = async(value)=>{
+      let tmp = history;
+      switch(value){
+        case "O_Win":
+          tmp = {...tmp,"winO":tmp.winO+1};
+          AsyncStorage.setItem("HISTORY",JSON.stringify(tmp));
+          sethistory(tmp)
+          break;
+        case "X_Win":
+          tmp = {...tmp,"winX":tmp.winX+1};
+          AsyncStorage.setItem("HISTORY",JSON.stringify(tmp));
+          sethistory(tmp)
+          break;
+        case "Draw":
+          tmp = {...tmp,"draw":tmp.draw+1};
+          AsyncStorage.setItem("HISTORY",JSON.stringify(tmp));
+          sethistory(tmp)
+          break;
+      }
+      
+    }
     useEffect(()=>{
       navigation.setOptions({
         headerLeft: () => (
@@ -79,24 +111,76 @@ const Game = ({navigation}) => {
             title="Back"
           />
         ),
-        headerRight:null
+        headerRight:() => (
+          <Button
+            onPress={() => {
+              setmodalHistoryVisible(true)
+            }}
+            title="History"
+          />
+        ),
       });
     },[])
+
+    useEffect(()=>{
+      handleUpdateHistory();
+    },[])
+
     useEffect(() => {
       const winner = calculateWinner(markers);
       if(winner === 'X'){
-        alert("X Won!")
+        alert("X Won!");
+        handleSetHistory("O_Win");
         resetMarkers()
       }else if(winner === 'O'){
-        alert("O Won!")
-        resetMarkers()
+        alert("O Won!");
+        handleSetHistory("X_Win");
+        resetMarkers();
       }else if(winner === "not_win"){
-        alert("The match in draw!")
-        resetMarkers()
+        alert("The match in draw!");
+        handleSetHistory("Draw");
+        resetMarkers();
       }
     }, [markers])
+
+    const ModalHistory = ()=>(
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalHistoryVisible}
+        onRequestClose={() => {
+          setmodalHistoryVisible(!modalHistoryVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={{fontSize:24,fontWeight:'bold'}}>History Game</Text>
+            <View style={{flexDirection:'row',marginTop:10}}>
+              <Text>O Won :</Text>
+              <Text style={{marginLeft:5}}>{history.winO}</Text>
+            </View>
+            <View style={{flexDirection:'row',marginTop:10}}>
+              <Text>X Won :</Text>
+              <Text style={{marginLeft:5}}>{history.winX}</Text>
+            </View>
+            <View style={{flexDirection:'row',marginTop:10}}>
+              <Text>Draw :</Text>
+              <Text style={{marginLeft:5}}>{history.draw}</Text>
+            </View>
+            <View>
+              <Button
+                title="Close"
+                onPress={()=>setmodalHistoryVisible(false)}
+                style={{marginTop:15}}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+    )
     return (
       <SafeAreaView style={styles.body}>
+        <ModalHistory />
         <View style={[styles.playerInfo, { backgroundColor: active_player === 'X' ? '#FF6666' : '#111111' }]}>
           <Text style={styles.playerTxt}>Player {active_player}'s turn</Text>
         </View>
@@ -277,5 +361,26 @@ const styles = StyleSheet.create({
       cancelIcon: {
         height: 80,
         width: 80
-      }
+      },
+      centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
 })
