@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         marginBottom: 54,
         textAlign: 'center',
-        color: '#C837E5',
+        color: 'white',
         fontWeight: '900',
       },
       view1: {
