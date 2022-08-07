@@ -1,10 +1,14 @@
 import React from 'react';
-import { SafeAreaView,View,Text,Button,Switch } from 'react-native';
+import { SafeAreaView,View,Text,Button,Switch,Image,ImageBackground } from 'react-native';
 import { useSelector,useDispatch } from 'react-redux';
 import { turnOnSound,turnOffSound } from '../redux/reducer/soundReducer';
 import { setBackground } from '../redux/reducer/backgroundReducer';
 import AsyncStorage from '@react-native-community/async-storage';
 import {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import background1 from '../assets/img/background1.jpeg'
+import background2 from '../assets/img/background2.jpeg'
+import background3 from '../assets/img/background3.jpeg'
+
 export default function Setting({navigation}) {
     const dispatch = useDispatch();
     const {statusSound} = useSelector((e)=>e.SoundReducer)
@@ -70,7 +74,7 @@ export default function Setting({navigation}) {
               onPress={setBackgroundCurrent}
               borderWidth={1}
               buttonInnerColor={'#e74c3c'}
-              buttonOuterColor={backgroundCurrent==valueBG ? '#2196f3' : '#000'}
+              buttonOuterColor={backgroundCurrent==valueBG ? '#2196f3' : 'white'}
               buttonSize={18}
               buttonOuterSize={25}
               buttonStyle={{}}
@@ -80,20 +84,24 @@ export default function Setting({navigation}) {
               obj={{label:`Set ${valueBG}`,value:valueBG,index:valueBG}}
               labelHorizontal={true}
               onPress={setBackgroundCurrent}
-              labelStyle={{fontSize: 15, color: 'gray'}}
+              labelStyle={{fontSize: 15, color: 'white'}}
               labelWrapStyle={{}}
             />
           </RadioButton>
-          <View
+          <Image
+            source={valueBG == 1 ? background1 : valueBG == 2 ? background2:background3}
             style={{
               backgroundColor:valueBG == 1 ? 'red' : valueBG == 2 ? 'tomato':'green',
               width:'100%',
               height:150,
-              borderRadius:10
+              borderRadius:10,
+              borderColor:'white',
+              borderWidth:4,
+              marginTop:10
             }}
           >
 
-          </View>
+          </Image>
         </View>
       )
     }
@@ -104,7 +112,15 @@ export default function Setting({navigation}) {
       alert(`Set background is set ${value} success !`)
     }
     return(
-        <SafeAreaView style={{flex:1}}>
+        // <SafeAreaView style={{flex:1}}>
+            <ImageBackground 
+              source={backgroundCurrent == "1" ? background1 : backgroundCurrent == "2" ? background2:background3} 
+              resizeMode="cover" 
+              style={{flex:1}}
+            >
+            <View
+              style={{flex:1,backgroundColor: 'rgba(0,0,0, 0.4)'}}
+            >
             <View
               style={{
                 flexDirection:'row',
@@ -113,13 +129,14 @@ export default function Setting({navigation}) {
                 paddingHorizontal:20
               }}
             >
-            <Text style={{color:'black',marginRight:20,fontSize:17}}>Sound Game</Text>
+            <Text style={{color:'white',marginRight:20,fontSize:17}}>Sound Game</Text>
             <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 thumbColor={statusSound === "on" ? "#f5dd4b" : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={handleChangeSound}
                 value={statusSound === "on"}
+                style={{borderColor:'white',borderWidth:1}}
             />
             </View>
             <View 
@@ -129,7 +146,7 @@ export default function Setting({navigation}) {
                 paddingHorizontal:20
               }}
             >
-              <Text style={{color:'black',marginRight:20,fontSize:17}}>Set Background</Text>
+              <Text style={{color:'white',marginRight:20,fontSize:17}}>Set Background</Text>
               <View
                 style={{
                   flexDirection:'row',
@@ -143,8 +160,8 @@ export default function Setting({navigation}) {
                 <ComponentBackground valueBG={3}/>
               </View>
             </View>
-
-
-        </SafeAreaView>
+          </View>
+          </ImageBackground>
+        // </SafeAreaView>
     )
 }

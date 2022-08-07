@@ -1,9 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View,ImageBackground,SafeAreaView } from 'react-native'
 import React from 'react'
 // Import the react-native-sound module
 import { useSelector,useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import { setBackground } from '../redux/reducer/backgroundReducer';
+import background1 from '../assets/img/background1.jpeg'
+import background2 from '../assets/img/background2.jpeg'
+import background3 from '../assets/img/background3.jpeg'
 
 const Splash = ({navigation}) => {
   const {backgroundCurrent} = useSelector((e)=>e.BackgroundReducer);
@@ -30,8 +33,20 @@ const Splash = ({navigation}) => {
       }
     }
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>{`BackgroundCurrent is ${backgroundCurrent}`}</Text>
+    <ImageBackground 
+        source={backgroundCurrent == "1" ? background1 : backgroundCurrent == "2" ? background2:background3} 
+        resizeMode="cover" 
+        style={{flex:1}}
+      >
+      <View
+        style={{
+          flex:1,
+          backgroundColor: 'rgba(0,0,0, .5)',
+          justifyContent:'center',
+          alignItems:'center',
+          paddingHorizontal: 20
+        }}
+      >
       <Text style={styles.welcome}>{`TicTacToe Funny Game`}</Text>
       <View style={styles.view1}>
       <TouchableOpacity onPress={() => navigation.navigate('game')}>
@@ -48,7 +63,8 @@ const Splash = ({navigation}) => {
         <Text style={styles.instructions}>Setting</Text>
       </TouchableOpacity>
       </View>
-    </View>
+      </View>
+    </ImageBackground>
   )
 }
 
@@ -71,16 +87,23 @@ const styles = StyleSheet.create({
       view1: {
         height: 50,
         width: 200,
-        backgroundColor: '#000',
+        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-
+        borderRadius:10,
+        shadowColor: "#fff",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
       },
       instructions: {
         textAlign: 'center',
-        color: '#fff',
+        color: '#000',
         fontSize: 18,
         fontWeight: 'bold',
-        paddingHorizontal: 10
       },
 })
