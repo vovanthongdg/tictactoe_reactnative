@@ -58,7 +58,16 @@ const Game = ({navigation}) => {
           return squares[a];
         }
       }
-      return null
+      let check = 0;
+      for(let j = 0; j < squares.length; j++){
+        check++;
+        if(squares[j]===null){
+          return null
+        }
+        if(squares[j]!==null && check===9){
+          return "not_win"
+        }
+      }
     }
     useEffect(()=>{
       navigation.setOptions({
@@ -82,7 +91,7 @@ const Game = ({navigation}) => {
         alert("O Won!")
         resetMarkers()
       }else if(winner === "not_win"){
-        alert("Hoà nè")
+        alert("The match in draw!")
         resetMarkers()
       }
     }, [markers])
