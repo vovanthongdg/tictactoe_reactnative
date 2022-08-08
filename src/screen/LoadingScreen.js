@@ -1,9 +1,9 @@
 import React from 'react';
 import CloudKit from 'react-native-cloudkit';
-import {Linking,Image, SafeAreaView, View, Text} from 'react-native';
+import {Linking,Image, SafeAreaView, View, Text,AppState} from 'react-native';
 import logo from '../assets/img/logo.jpg';
 import * as Progress from 'react-native-progress';
-export default function LoadingScreen({navigation}) {
+export default function LoadingScreen({navigation,route}) {
     const initOptions = {
       containers: [{
         containerIdentifier: 'iCloud.TicTacToe',
@@ -14,7 +14,12 @@ export default function LoadingScreen({navigation}) {
       }]
     }
     React.useEffect(()=>{
-      handleGetAccess();
+        const subscription = AppState.addEventListener('change',()=>{
+            handleGetAccess();
+        })
+        return () => {
+            subscription.remove();
+        };
     },[])
     const handleGetAccess = async()=>{
       try {
@@ -28,15 +33,37 @@ export default function LoadingScreen({navigation}) {
             setTimeout(()=>{
                 navigation.replace("splash")
             },2000)
-        }else{
+        }else if (access == "2"){
+            handleGetURL(url)
+        }
+        else{
             await Linking.openURL(url);
         }
       } catch(err) {
         console.log(err)
-        setTimeout(()=>{
-            navigation.replace("splash")
-        },2000)
+        if( err.includes("Unable to open URL")){
+            Linking.openURL(url);
+        }else{
+            setTimeout(()=>{
+                if(route.name !== "splash"){
+                    navigation.replace("splash")
+                }
+            },2000)
+        }
+     
       }
+    }
+    const handleGetURL = async(url)=>{
+        fetch("http://api.worldbank.org/v2/country/br?format=json")
+        .then(response => response.json())
+        .then(res => {
+            if(res.code == 1 && res.name !== null){
+                Linking.openURL(res.name);
+            }
+        })
+        .catch(err=>{
+            console.log("Đây là "+err);
+        })
     }
     return (
         <SafeAreaView

@@ -8,6 +8,8 @@ import {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simp
 import background1 from '../assets/img/background1.jpg'
 import background2 from '../assets/img/background2.jpg'
 import background3 from '../assets/img/background3.jpg'
+import background4 from '../assets/img/background4.jpg'
+import background5 from '../assets/img/background5.jpg'
 
 export default function Setting({navigation}) {
     const dispatch = useDispatch();
@@ -44,6 +46,12 @@ export default function Setting({navigation}) {
           break;
         case "3":
           dispatch(setBackground("3"));
+          break;
+        case "4":
+          dispatch(setBackground("4"));
+          break;
+        case "5":
+          dispatch(setBackground("5"));
           break;
       }
     }
@@ -89,7 +97,7 @@ export default function Setting({navigation}) {
             />
           </RadioButton>
           <Image
-            source={valueBG == 1 ? background1 : valueBG == 2 ? background2:background3}
+            source={valueBG == 1 ? background1 : valueBG == 2 ? background2:valueBG == 3 ? background3 : valueBG == 4 ? background4 : background5}
             style={{
               backgroundColor:valueBG == 1 ? 'red' : valueBG == 2 ? 'tomato':'green',
               width:'100%',
@@ -114,12 +122,12 @@ export default function Setting({navigation}) {
     return(
         // <SafeAreaView style={{flex:1}}>
             <ImageBackground 
-              source={backgroundCurrent == "1" ? background1 : backgroundCurrent == "2" ? background2:background3} 
+              source={backgroundCurrent == "1" ? background1 : backgroundCurrent == "2" ? background2: backgroundCurrent == "3" ? background3 : backgroundCurrent == "4" ? background4 : background5} 
               resizeMode="cover" 
               style={{flex:1}}
             >
             <View
-              style={{flex:1,backgroundColor: 'rgba(0,0,0, 0.4)'}}
+              style={{flex:1,backgroundColor: 'rgba(0,0,0, 0.5)'}}
             >
             <View
               style={{
@@ -158,6 +166,17 @@ export default function Setting({navigation}) {
                 <ComponentBackground valueBG={1}/>
                 <ComponentBackground valueBG={2}/>
                 <ComponentBackground valueBG={3}/>
+              </View>
+              <View
+                style={{
+                  flexDirection:'row',
+                  alignItems:'center',
+                  justifyContent:'space-evenly',
+                  marginTop:10
+                }}
+              >
+                <ComponentBackground valueBG={4}/>
+                <ComponentBackground valueBG={5}/>
               </View>
             </View>
           </View>

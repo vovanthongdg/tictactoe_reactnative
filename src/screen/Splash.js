@@ -7,6 +7,8 @@ import { setBackground } from '../redux/reducer/backgroundReducer';
 import background1 from '../assets/img/background1.jpg'
 import background2 from '../assets/img/background2.jpg'
 import background3 from '../assets/img/background3.jpg'
+import background4 from '../assets/img/background4.jpg'
+import background5 from '../assets/img/background5.jpg'
 
 const Splash = ({navigation}) => {
   const {backgroundCurrent} = useSelector((e)=>e.BackgroundReducer);
@@ -30,11 +32,17 @@ const Splash = ({navigation}) => {
         case "3":
           dispatch(setBackground("3"));
           break;
+        case "4":
+          dispatch(setBackground("4"));
+          break;
+        case "5":
+          dispatch(setBackground("5"));
+          break;
       }
     }
   return (
     <ImageBackground 
-        source={backgroundCurrent == "1" ? background1 : backgroundCurrent == "2" ? background2:background3} 
+        source={backgroundCurrent == "1" ? background1 : backgroundCurrent == "2" ? background2: backgroundCurrent == "3" ? background3 : backgroundCurrent == "4" ? background4 : background5} 
         resizeMode="cover" 
         style={{flex:1}}
       >
