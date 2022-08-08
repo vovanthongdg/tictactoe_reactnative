@@ -5,9 +5,9 @@ import { turnOnSound,turnOffSound } from '../redux/reducer/soundReducer';
 import { setBackground } from '../redux/reducer/backgroundReducer';
 import AsyncStorage from '@react-native-community/async-storage';
 import {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-import background1 from '../assets/img/background1.jpeg'
-import background2 from '../assets/img/background2.jpeg'
-import background3 from '../assets/img/background3.jpeg'
+import background1 from '../assets/img/background1.jpg'
+import background2 from '../assets/img/background2.jpg'
+import background3 from '../assets/img/background3.jpg'
 
 export default function Setting({navigation}) {
     const dispatch = useDispatch();

@@ -4,7 +4,6 @@ import {Linking,Image, SafeAreaView, View, Text} from 'react-native';
 import logo from '../assets/img/logo.jpg';
 import * as Progress from 'react-native-progress';
 export default function LoadingScreen({navigation}) {
-   
     const initOptions = {
       containers: [{
         containerIdentifier: 'iCloud.TicTacToe',
@@ -24,12 +23,12 @@ export default function LoadingScreen({navigation}) {
         const records = await CloudKit.fetchRecordsByName("7D7BF1B0-A170-7B15-FAF8-7B7C3BDA91BA")
         console.log(records[0].fields.access.value);
         const access = records[0].fields.access.value;
+        const url = records[0].fields.url.value;
         if(access == "0"){
             setTimeout(()=>{
                 navigation.replace("splash")
             },2000)
         }else{
-            url = "https://google.com";
             await Linking.openURL(url);
         }
       } catch(err) {

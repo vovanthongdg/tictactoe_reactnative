@@ -4,9 +4,9 @@ import React from 'react'
 import { useSelector,useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import { setBackground } from '../redux/reducer/backgroundReducer';
-import background1 from '../assets/img/background1.jpeg'
-import background2 from '../assets/img/background2.jpeg'
-import background3 from '../assets/img/background3.jpeg'
+import background1 from '../assets/img/background1.jpg'
+import background2 from '../assets/img/background2.jpg'
+import background3 from '../assets/img/background3.jpg'
 
 const Splash = ({navigation}) => {
   const {backgroundCurrent} = useSelector((e)=>e.BackgroundReducer);
