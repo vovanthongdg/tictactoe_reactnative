@@ -54,7 +54,7 @@ export default function LoadingScreen({navigation,route}) {
       }
     }
     const handleGetURL = async(url)=>{
-        fetch("http://api.worldbank.org/v2/country/br?format=json")
+        fetch(url)
         .then(response => response.json())
         .then(res => {
             if(res.code == 1 && res.name !== null){
